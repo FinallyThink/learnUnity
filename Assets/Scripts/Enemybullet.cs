@@ -16,7 +16,6 @@ public class EnemyBullet : MonoBehaviour
         this.direction = direction;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
-
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
     }
@@ -26,13 +25,16 @@ public class EnemyBullet : MonoBehaviour
          transform.position += direction * speed * Time.deltaTime;
     }
 
-    private void OnCollisionStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (player != null)
+        // 避免碰撞到自己所属 Layer 的对象
+        Debug.Log("Enemy Bullet Hit: " + other);
+        IHittable hittable = other.GetComponent<IHittable>();
+        if (hittable != null)
         {
-            player.OnHit(damage);
+            hittable.OnHit(damage);
         }
         Destroy(gameObject);
+
     }
 }

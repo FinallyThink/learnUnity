@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour,IHittable
 {
     public float moveSpeed = 1;
     public int HP = 10;
@@ -48,7 +48,6 @@ public class EnemyController : MonoBehaviour
         {
             fireTimer = fireRate;
             Shoot(direction);
-            Debug.Log("Enemy Shoot"+ direction);
         }
         else if (distance >= 5)
         {

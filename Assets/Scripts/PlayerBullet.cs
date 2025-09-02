@@ -17,7 +17,6 @@ public class PlayerBullet : MonoBehaviour
         this.direction = direction;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
-
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
     }
@@ -30,13 +29,11 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 避免碰撞到自己所属 Layer 的对象
         IHittable hittable = other.GetComponent<IHittable>();
         if (hittable != null)
         {
             hittable.OnHit(damage);
         }
         Destroy(gameObject);
-
     }
 }
