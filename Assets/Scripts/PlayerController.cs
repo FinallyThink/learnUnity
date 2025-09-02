@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IHittable
     public void OnHit(int scope)
     {
         PlayerHp -= scope;
+        Debug.Log("Player Hit: " + scope + ", Current HP: " + PlayerHp);
         if (PlayerHp <= 0)
         {
             Debug.Log("Game Over");

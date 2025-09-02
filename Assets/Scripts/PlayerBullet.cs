@@ -33,7 +33,8 @@ public class PlayerBullet : MonoBehaviour
         if (hittable != null)
         {
             hittable.OnHit(damage);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+      
     }
 }
