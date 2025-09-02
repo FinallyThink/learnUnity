@@ -1,74 +1,90 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour,IHittable
+public class EnemyController : MonoBehaviour, IHittable
 {
-    public float moveSpeed = 1;
+    [Header("基础属性")]
+    public float moveSpeed = 1f;
     public int HP = 10;
 
+    [Header("攻击属性")]
     public float fireRate = 2f;
     private float fireTimer = 0f;
-
     public Transform firePoint;
+
+    private Rigidbody2D rb;
+    private Transform player;
+
+    // 初始化方法（外部调用）
     public void Init(float size, float moveSpeed, Color color)
     {
         transform.localScale = Vector3.one * size;
-        this.moveSpeed = moveSpeed;
+        this.moveSpeed = moveSpeed *2;
         GetComponent<SpriteRenderer>().color = color;
     }
 
+    // IHittable 接口实现
     public void OnHit(int scope)
     {
         Debug.Log("Enemy Hit: " + scope + ", Current HP: " + HP);
-        this.HP -= scope;
-        if (this.HP <= 0)
+        HP -= scope;
+        if (HP <= 0)
         {
             Destroy(gameObject);
         }
     }
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        player = GameManager.Instance.player.transform;
 
+        // 冻结旋转避免物理干扰
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
 
     void Update()
     {
-
-        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
-        float distance = (GameManager.Instance.player.transform.position - transform.position).magnitude;
+        if (player == null) return;
 
         // ---------------- 朝向玩家 ----------------
+        Vector2 direction = (player.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        rb.rotation = angle - 90f;
 
         // ---------------- 射击 ----------------
         fireTimer -= Time.deltaTime;
-        if (distance < 5 && fireTimer <= 0f)
+        float distance = Vector2.Distance(player.position, transform.position);
+        if (distance < 5f && fireTimer <= 0f)
         {
             fireTimer = fireRate;
             Shoot(direction);
         }
-        else if (distance >= 5)
+    }
+
+    void FixedUpdate()
+    {
+        if (player == null) return;
+
+        // ---------------- 移动 ----------------
+        float distance = Vector2.Distance(player.position, transform.position);
+        if (distance >= 5f)
         {
-            // ---------------- 移动 ----------------
-            transform.position += direction * moveSpeed * Time.deltaTime;
+            Vector2 direction = (player.position - transform.position).normalized;
+            Vector2 movement = direction * moveSpeed * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + movement);
         }
     }
 
-    private void Shoot(Vector3 direction)
+    private void Shoot(Vector2 direction)
     {
-        // 检查 prefab 和发射点是否存在
         if (GameManager.Instance.enemyBulletPrefab == null || firePoint == null) return;
 
-        // 实例化子弹
         GameObject bulletObj = Instantiate(GameManager.Instance.enemyBulletPrefab, firePoint.position, firePoint.rotation);
 
-        // 获取 Bullet 脚本
         EnemyBullet bullet = bulletObj.GetComponent<EnemyBullet>();
         if (bullet != null)
         {
-            // 初始化子弹
             bullet.Init(
                 direction: direction,
                 speed: 3,
@@ -76,5 +92,4 @@ public class EnemyController : MonoBehaviour,IHittable
             );
         }
     }
-
 }

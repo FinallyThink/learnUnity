@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour, IHittable
     public void OnHit(int scope)
     {
         PlayerHp -= scope;
-        Debug.Log("Player Hit: " + scope + ", Current HP: " + PlayerHp);
+
         if (PlayerHp <= 0)
         {
             Debug.Log("Game Over");
@@ -43,12 +43,12 @@ public class PlayerController : MonoBehaviour, IHittable
         // ---------------- 移动 ----------------
         float h = Input.GetAxisRaw("Horizontal"); // A,D  
         float v = Input.GetAxisRaw("Vertical");   // W,S 
-        Vector3 move = new Vector3(h, v, 0).normalized;
+        Vector2 move = new Vector2(h, v).normalized;
         rigidbody2D.position += new Vector2(move.x, move.y) * moveSpeed * Time.deltaTime;
 
         // ---------------- 朝向鼠标 ----------------
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 faceToMouse = (mousePos - transform.position).normalized;
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 faceToMouse = (mousePos -  rigidbody2D.position).normalized;
         float angle = Mathf.Atan2(faceToMouse.y, faceToMouse.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour, IHittable
         injuryProtectionTimer = Mathf.Max(0, injuryProtectionTimer - Time.deltaTime);
     }
 
-    private void Shoot(Vector3 direction)
+    private void Shoot(Vector2 direction)
     {
         // 检查 prefab 和发射点是否存在
         if (GameManager.Instance.PlayerBulletPrefab == null || firePoint == null) return;
@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour, IHittable
         {
             // 初始化子弹
             bullet.Init(
-
                 direction: direction,
                 speed: bulletSpeed,
                 damage: bulletDamage
@@ -91,7 +90,8 @@ public class PlayerController : MonoBehaviour, IHittable
     {   
         EnemyController enemy = coll.gameObject.GetComponent<EnemyController>();
         if (injuryProtectionTimer <= 0 && enemy != null)
-        {
+        {   
+            Debug.Log("Player Hit: 1"  + ", Current HP: " + PlayerHp);
             OnHit(1);
         }
     }

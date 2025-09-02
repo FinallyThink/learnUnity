@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour, IHittable
 {
     private float speed;
     private int damage;
@@ -19,23 +19,30 @@ public class EnemyBullet : MonoBehaviour
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
     }
+    public void OnHit(int scope)
+    {
+        // 子弹被击中时的处理逻辑（如果需要）
+        Destroy(gameObject);
+    }
 
     private void Update()
     {
-         transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 避免碰撞到自己所属 Layer 的对象
-        Debug.Log("Enemy Bullet Hit: " + other);
+        int layerMask = LayerMask.GetMask("Player", "PlayerBullet");
+        if ((layerMask & (1 << other.gameObject.layer)) == 0)
+            return; // 没勾选的 Layer，不触发 Destroy
+
         IHittable hittable = other.GetComponent<IHittable>();
         if (hittable != null)
         {
             hittable.OnHit(damage);
             Destroy(gameObject);
         }
-      
+
 
     }
 }

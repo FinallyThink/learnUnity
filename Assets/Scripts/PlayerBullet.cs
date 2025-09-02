@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerBullet : MonoBehaviour
+public class PlayerBullet : MonoBehaviour, IHittable
 {
     private float speed;
     private int damage;
@@ -10,7 +10,7 @@ public class PlayerBullet : MonoBehaviour
 
     public Vector3 direction;
 
-    public void Init(Vector3 direction, float speed, int damage)
+    public void Init(Vector2 direction, float speed, int damage)
     {
         this.speed = speed;
         this.damage = damage;
@@ -20,21 +20,28 @@ public class PlayerBullet : MonoBehaviour
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
     }
-
+    public void OnHit(int scope)
+    {
+        // 子弹被击中时的处理逻辑（如果需要）
+        Destroy(gameObject);
+    }
     private void Update()
     {
-       
-      transform.position += direction * speed * Time.deltaTime;
+
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyController hittable = other.GetComponent<EnemyController>();
+        int layerMask = LayerMask.GetMask("EnemyBullet", "Enemy");
+        if ((layerMask & (1 << other.gameObject.layer)) == 0)
+            return; // 没勾选的 Layer，不触发 Destroy
+
+        IHittable hittable = other.GetComponent<IHittable>();
         if (hittable != null)
         {
             hittable.OnHit(damage);
             Destroy(gameObject);
         }
-      
     }
 }
