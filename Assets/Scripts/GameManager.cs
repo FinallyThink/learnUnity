@@ -9,7 +9,6 @@ public class GameManager : MonoSingleton<GameManager>
     public PlayerController player;
     public GameObject enemyPrefab;
     public GameObject PlayerBulletPrefab;
-
     public GameObject enemyBulletPrefab;
 
 }
