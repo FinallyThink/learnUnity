@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour, IHittable
 
 
     private void OnCollisionStay2D(Collision2D coll)
-    {
+    {   
         EnemyController enemy = coll.gameObject.GetComponent<EnemyController>();
         if (injuryProtectionTimer <= 0 && enemy != null)
         {

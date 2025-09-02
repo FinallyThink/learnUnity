@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
@@ -5,17 +6,17 @@ public class PlayerBullet : MonoBehaviour
     private float speed;
     private int damage;
 
-    public float lifeTime = 10f;   // 子弹存在时间
-    private int ownerLayer; // 子弹所属的 Layer
+    public float lifeTime = 10f;   // 子弹存在时间、
+
+    public Vector3 direction;
 
     public void Init(Vector3 direction, float speed, int damage)
     {
         this.speed = speed;
         this.damage = damage;
-
-        // 设置子弹自身的 Layer 和方向
-        gameObject.layer = ownerLayer;
-        transform.up = direction.normalized;
+        this.direction = direction;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
 
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
@@ -23,17 +24,19 @@ public class PlayerBullet : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+       
+      transform.position += direction * speed * Time.deltaTime;
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-          EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
-          Debug.Log("Hit Enemy");
-        if (enemy != null)
+        // 避免碰撞到自己所属 Layer 的对象
+        IHittable hittable = other.GetComponent<IHittable>();
+        if (hittable != null)
         {
-
-            enemy.OnHit(damage);
-            Destroy(gameObject); // 命中后销毁子弹
+            hittable.OnHit(damage);
         }
+        Destroy(gameObject);
+
     }
 }

@@ -48,6 +48,7 @@ public class EnemyController : MonoBehaviour
         {
             fireTimer = fireRate;
             Shoot(direction);
+            Debug.Log("Enemy Shoot"+ direction);
         }
         else if (distance >= 5)
         {
@@ -65,7 +66,7 @@ public class EnemyController : MonoBehaviour
         GameObject bulletObj = Instantiate(GameManager.Instance.enemyBulletPrefab, firePoint.position, firePoint.rotation);
 
         // 获取 Bullet 脚本
-        Enemybullet bullet = bulletObj.GetComponent<Enemybullet>();
+        EnemyBullet bullet = bulletObj.GetComponent<EnemyBullet>();
         if (bullet != null)
         {
             // 初始化子弹

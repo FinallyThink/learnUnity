@@ -1,21 +1,21 @@
 using UnityEngine;
 
-public class Enemybullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     private float speed;
     private int damage;
 
-    public float lifeTime = 10f;   // 子弹存在时间
-    private int ownerLayer; // 子弹所属的 Layer
+    public float lifeTime = 10f;   // 子弹存在时间、
+
+    public Vector3 direction;
 
     public void Init(Vector3 direction, float speed, int damage)
     {
         this.speed = speed;
         this.damage = damage;
-
-        // 设置子弹自身的 Layer 和方向
-        gameObject.layer = ownerLayer;
-        transform.up = direction.normalized;
+        this.direction = direction;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
 
         // 自动销毁子弹
         Destroy(gameObject, lifeTime);
@@ -23,17 +23,16 @@ public class Enemybullet : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+         transform.position += direction * speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionStay2D(Collider2D other)
     {
-        PlayerController hittable = other.gameObject.GetComponent<PlayerController>();
-
-        if (hittable != null)
+        PlayerController player = other.GetComponent<PlayerController>();
+        if (player != null)
         {
-            hittable.OnHit(damage);
-            Destroy(gameObject); // 命中后销毁子弹
+            player.OnHit(damage);
         }
+        Destroy(gameObject);
     }
 }
