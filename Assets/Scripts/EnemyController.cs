@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour,IHittable
 
     public void OnHit(int scope)
     {
-        Debug.Log("Enemy Hit: " + scope);
+        Debug.Log("Enemy Hit: " + scope + ", Current HP: " + HP);
         this.HP -= scope;
         if (this.HP <= 0)
         {

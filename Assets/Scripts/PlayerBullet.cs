@@ -29,7 +29,7 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        IHittable hittable = other.GetComponent<IHittable>();
+        EnemyController hittable = other.GetComponent<EnemyController>();
         if (hittable != null)
         {
             hittable.OnHit(damage);

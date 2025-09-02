@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour, IHittable
     public int PlayerHp = 10;
     public int maxHp = 10;
 
+    private Rigidbody2D rigidbody2D;
+
+    
+
     [Header("受伤保护")]
     public float injuryProtectionCd = 0.1f;
     private float injuryProtectionTimer = 0f;
@@ -16,6 +20,11 @@ public class PlayerController : MonoBehaviour, IHittable
     public int bulletDamage = 8;      // 子弹伤害
     public float fireRate = 0.2f;     // 射速（秒）
     private float fireTimer = 0f;
+
+    private void Awake()
+    {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     public void OnHit(int scope)
     {
@@ -35,7 +44,7 @@ public class PlayerController : MonoBehaviour, IHittable
         float h = Input.GetAxisRaw("Horizontal"); // A,D  
         float v = Input.GetAxisRaw("Vertical");   // W,S 
         Vector3 move = new Vector3(h, v, 0).normalized;
-        transform.position += move * moveSpeed * Time.deltaTime;
+        rigidbody2D.position += new Vector2(move.x, move.y) * moveSpeed * Time.deltaTime;
 
         // ---------------- 朝向鼠标 ----------------
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
