@@ -12,16 +12,17 @@ public class GameManager : MonoSingleton<GameManager>
     public GameObject PlayerBulletPrefab;
     public GameObject enemyBulletPrefab;
 
-    public GameObject enemyHPbarPrefab;
+
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
 
     private int score = 0;
 
+
     private void Start()
     {
         SetScore(0);
-       enemySpawner.gameObject.SetActive(false);
+        enemySpawner.gameObject.SetActive(false);
     }
 
     public int AddScore(int add)
@@ -39,7 +40,18 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void OnGameStart()
     {
+        player.PlayerHp = player.maxHp;
+        SetScore(0);
         enemySpawner.gameObject.SetActive(true);
+        uiManager.HiddenGameOverBtu();
+    }
+
+    public void GameOver()
+    {
+        uiManager.txtGameOver.gameObject.SetActive(true);
+        enemySpawner.gameObject.SetActive(false);
+        uiManager.btnReStartGame.gameObject.SetActive(true);
+        uiManager.ClearEnemyHpBars();
     }
 
 }

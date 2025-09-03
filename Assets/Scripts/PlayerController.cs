@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IHittable
 
         if (PlayerHp <= 0)
         {
-            Debug.Log("Game Over");
+            GameManager.Instance.GameOver();
             // 这里可以加游戏结束逻辑
         }
         injuryProtectionTimer = injuryProtectionCd;

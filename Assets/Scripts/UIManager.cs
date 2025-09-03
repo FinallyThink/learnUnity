@@ -7,24 +7,47 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public Text txtScore;
+
+    public Text txtGameOver;
     public Button btnStart;
+
+    public Button btnReStartGame;
 
     public UIHpBar playerHpbar;
     public GameObject enemyHPbarPrefab;
-    public UIHpBar enemyHpBarPrefab;
 
     public RectTransform enemyHpBarsTransFrom;
     private List<UIHpBar> enemyHpBars = new List<UIHpBar>();
     private void Start()
     {
         btnStart.gameObject.SetActive(true);
+        btnReStartGame.gameObject.SetActive(false);
+        txtGameOver.gameObject.SetActive(false);
+    }
 
+    public void HiddenGameOverBtu()
+    {
+        btnReStartGame.gameObject.SetActive(false);
+        txtGameOver.gameObject.SetActive(false);   
+    }
+    public void ClearEnemyHpBars()
+    {
+        foreach (var hpBar in enemyHpBars)
+        {
+            if (hpBar != null)
+            {
+                Destroy(hpBar.gameObject); // 销毁UI对象
+            }
+        }
+        enemyHpBars.Clear();
     }
 
     public void ShowScore(int socre)
     {
         txtScore.text = " 得分：" + socre;
     }
+
+
 
     public void OnClickStart()
     {
