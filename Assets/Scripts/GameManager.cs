@@ -52,6 +52,7 @@ public class GameManager : MonoSingleton<GameManager>
         enemySpawner.gameObject.SetActive(false);
         uiManager.btnReStartGame.gameObject.SetActive(true);
         uiManager.ClearEnemyHpBars();
+        enemySpawner.KillAllEnemies();
     }
 
 }

@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
 
     public float timer = 0;
 
+    private List<GameObject> Enemies = new List<GameObject>();
     // Update is called once per frame
     private void Update()
     {
@@ -23,7 +24,19 @@ public class EnemySpawner : MonoBehaviour
             obj.transform.position = transform.position + radius * new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
             obj.GetComponent<EnemyController>().Init(Random.Range(0.5f, 1.5f), Random.Range(1f, 3f), Random.ColorHSV(0, 1, 0.5f, 1, 1, 1));
             obj.transform.SetParent(transform);
+            Enemies.Add(obj);
             GameManager.Instance.uiManager.NewEnemyHpBar(obj);
         }
+    }
+
+    public void KillAllEnemies()
+    {
+        for (int i = Enemies.Count - 1; i >= 0; --i)
+        {
+            GameObject b = Enemies[i];
+            Destroy(b.gameObject);
+            Enemies.RemoveAt(i);
+        }
+
     }
 }
