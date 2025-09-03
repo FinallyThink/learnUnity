@@ -276,7 +276,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u5F97\u5206 \uFF1A123"
+  m_Text: "\u5F97\u5206 \uFF1A0"
 --- !u!222 &339203390
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -724,10 +724,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 59f8b91c1010d7549b32a590abfd7774, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
-        m_Mode: 5
+      - m_Target: {fileID: 761761216}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClickStart
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1239,7 +1239,7 @@ MonoBehaviour:
   PlayerBulletPrefab: {fileID: 8724108985003333548, guid: 5eb8bc4539cc3884aafb8b6d129846cb, type: 3}
   enemyBulletPrefab: {fileID: 9073982859270884315, guid: 1a0e7486105eda540a803b6b341aef72, type: 3}
   uiManager: {fileID: 761761216}
-  enemySpawner: {fileID: 0}
+  enemySpawner: {fileID: 373505409}
 --- !u!4 &1921340203
 Transform:
   m_ObjectHideFlags: 0

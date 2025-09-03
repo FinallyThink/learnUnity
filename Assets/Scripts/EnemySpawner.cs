@@ -23,6 +23,7 @@ public class EnemySpawner : MonoBehaviour
             obj.transform.position = transform.position + radius * new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
             obj.GetComponent<EnemyController>().Init(Random.Range(0.5f, 1.5f), Random.Range(1f, 3f), Random.ColorHSV(0, 1, 0.5f, 1, 1, 1));
             obj.transform.SetParent(transform);
+            GameManager.Instance.uiManager.NewEnemyHpBar(obj);
         }
     }
 }

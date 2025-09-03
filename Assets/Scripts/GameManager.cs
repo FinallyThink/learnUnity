@@ -11,6 +11,8 @@ public class GameManager : MonoSingleton<GameManager>
     public GameObject enemyPrefab;
     public GameObject PlayerBulletPrefab;
     public GameObject enemyBulletPrefab;
+
+    public GameObject enemyHPbarPrefab;
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
 

@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour, IHittable
     [Header("基础属性")]
     public float moveSpeed = 1f;
     public int HP = 10;
+    public int maxHp = 10;
 
     [Header("攻击属性")]
     public float fireRate = 2f;
