@@ -31,6 +31,7 @@ public class EnemyController : MonoBehaviour, IHittable
         if (HP <= 0)
         {
             Destroy(gameObject);
+            GameManager.Instance.AddScore(10);
         }
     }
 
