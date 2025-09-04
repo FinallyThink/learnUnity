@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 {
     public Text txtScore;
 
-    public Text txtGameOver;
+    public Image txtGameOver;
     public Button btnStart;
 
     public Button btnReStartGame;

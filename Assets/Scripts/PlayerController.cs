@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour, IHittable
         // ---------------- 朝向鼠标 ----------------
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 faceToMouse = (mousePos -  rigidbody2D.position).normalized;
-        float angle = Mathf.Atan2(faceToMouse.y, faceToMouse.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(faceToMouse.y, faceToMouse.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
         // ---------------- 射击 ----------------
