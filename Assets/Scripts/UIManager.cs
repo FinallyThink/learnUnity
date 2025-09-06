@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 {
     public Text txtScore;
 
+    public Text txtCoin;
+
     public Image txtGameOver;
     public Button btnStart;
 
@@ -15,7 +17,6 @@ public class UIManager : MonoBehaviour
 
     public UIHpBar playerHpbar;
     public GameObject enemyHPbarPrefab;
-
     public RectTransform enemyHpBarsTransFrom;
     private List<UIHpBar> enemyHpBars = new List<UIHpBar>();
     private void Start()
@@ -28,7 +29,7 @@ public class UIManager : MonoBehaviour
     public void HiddenGameOverBtu()
     {
         btnReStartGame.gameObject.SetActive(false);
-        txtGameOver.gameObject.SetActive(false);   
+        txtGameOver.gameObject.SetActive(false);
     }
     public void ClearEnemyHpBars()
     {
@@ -47,6 +48,15 @@ public class UIManager : MonoBehaviour
         txtScore.text = " 得分：" + socre;
     }
 
+    public void PlayScoreActiveAnimation()
+    {
+        txtScore.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    public void ShowCoin(int Coin)
+    {
+        txtCoin.text = " X " + Coin;
+    }
 
 
     public void OnClickStart()

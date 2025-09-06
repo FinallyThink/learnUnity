@@ -15,12 +15,14 @@ public class EnemyController : MonoBehaviour, IHittable
 
     private Rigidbody2D rb;
     private Transform player;
+    
+
 
     // 初始化方法（外部调用）
     public void Init(float size, float moveSpeed, Color color)
     {
         transform.localScale = Vector3.one * size;
-        this.moveSpeed = moveSpeed *2;
+        this.moveSpeed = moveSpeed * 2;
         GetComponent<SpriteRenderer>().color = color;
     }
 
@@ -33,6 +35,10 @@ public class EnemyController : MonoBehaviour, IHittable
         {
             Destroy(gameObject);
             GameManager.Instance.AddScore(10);
+            GameManager.Instance.coinSpawner.CreatNewCoin(transform.position);
+            
+
+            
         }
     }
 

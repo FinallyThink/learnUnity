@@ -71,9 +71,10 @@ public class PlayerController : MonoBehaviour, IHittable
 
         // 实例化子弹
         GameObject bulletObj = Instantiate(GameManager.Instance.PlayerBulletPrefab, firePoint.position, firePoint.rotation);
-
+        
         // 获取 Bullet 脚本
         PlayerBullet bullet = bulletObj.GetComponent<PlayerBullet>();
+        bullet.transform.SetParent(GameManager.Instance.BulletSpawner.transform);
         if (bullet != null)
         {
             // 初始化子弹
@@ -87,12 +88,15 @@ public class PlayerController : MonoBehaviour, IHittable
 
 
     private void OnCollisionStay2D(Collision2D coll)
-    {   
+    {
         EnemyController enemy = coll.gameObject.GetComponent<EnemyController>();
+
         if (injuryProtectionTimer <= 0 && enemy != null)
-        {   
-            Debug.Log("Player Hit: 1"  + ", Current HP: " + PlayerHp);
+        {
+            Debug.Log("Player Hit: 1" + ", Current HP: " + PlayerHp);
             OnHit(1);
         }
+
+
     }
 }

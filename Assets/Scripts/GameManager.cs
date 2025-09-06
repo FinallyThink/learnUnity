@@ -12,11 +12,14 @@ public class GameManager : MonoSingleton<GameManager>
     public GameObject PlayerBulletPrefab;
     public GameObject enemyBulletPrefab;
 
-
+    public GameObject CoinPrefat;
+    public CoinSpawner coinSpawner;
+    public BulletSpawner BulletSpawner;
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
-
     private int score = 0;
+
+    private int coin = 0;
 
 
     private void Start()
@@ -29,8 +32,23 @@ public class GameManager : MonoSingleton<GameManager>
     {
         score += add;
         uiManager.ShowScore(score);
+        uiManager.PlayScoreActiveAnimation();
         return score;
     }
+
+    public void setCoin(int coin)
+    {
+        this.coin = coin;
+        uiManager.ShowCoin(coin);
+    }
+
+    public int AddCoin(int add)
+    {
+        coin += add;
+        uiManager.ShowCoin(coin);
+        return coin;
+    }
+
 
     public void SetScore(int score)
     {
@@ -42,6 +60,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         player.PlayerHp = player.maxHp;
         SetScore(0);
+        setCoin(0);
         enemySpawner.gameObject.SetActive(true);
         uiManager.HiddenGameOverBtu();
     }
@@ -53,6 +72,6 @@ public class GameManager : MonoSingleton<GameManager>
         uiManager.btnReStartGame.gameObject.SetActive(true);
         uiManager.ClearEnemyHpBars();
         enemySpawner.KillAllEnemies();
+        coinSpawner.ClearnCoinList();
     }
-
 }
